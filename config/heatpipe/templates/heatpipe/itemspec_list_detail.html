@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block content %} 
+<p>&nbsp;</p>      
+<div class="results">
+    <table id="result_list" style="font-size:13px; border-width:1px; border-style:solid;" cellspacing="0" bordercolordark="white" bordercolorlight="black">
+        <thead>
+            <tr style="background-color:rgb(255,255,204); border-width:1px; border-style:solid;" cellspacing="0" bordercolordark="white" bordercolorlight="black">
+                <th scope="col" class="column-value_text" style="width:300px; height:40px"> 
+                    <div class="text">Field name</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col" class="column-description_text" style="width:1000px;"> 
+                    <div class="text"> Description </div>
+                    <div class="clear"></div>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody> 
+            <ul> 
+                <tr style="font-size:13px;" >
+                    <td class="field-value_text"> Product Name </td>
+                    <td class="field-description_text">{{ itemspec_list.prodcode_text }}</td> 
+                </tr>
+                <tr style="font-size:13px;">
+                    <td class="field-value_text"> Item Code </td>
+                    <td class="field-description_text">{{ itemspec_list.itemcode_text }}</td> 
+                </tr>
+                <tr style="font-size:13px;">
+                    <td class="field-value_text"> Drawing Number </td>
+                    <td class="field-description_text">{{ itemspec_list.drowcode_text }}</td> 
+                </tr>
+                <tr style="font-size:13px;">
+                    <td class="field-value_text"> Type </td>
+                    <td class="field-description_text">{{ itemspec_list.type_text }}</td> 
+                </tr>
+                <tr style="font-size:13px;">
+                    <td class="field-value_text"> Heat Dissipate (kW) </td>
+                    <td class="field-description_text">{{ itemspec_list.heat_dissipate_deci }}</td> 
+                </tr>
+                <tr style="font-size:13px;">
+                    <td class="field-value_text"> Delta Temperature (K) </td>
+                    <td class="field-description_text">{{ itemspec_list.delta_temp_deci }}</td> 
+                </tr>
+                <tr style="font-size:13px;">
+                    <td class="field-value_text"> Rth </td>
+                    <td class="field-description_text">{{ itemspec_list.rth_deci }}</td> 
+                </tr>
+                <tr style="font-size:13px;">
+                    <td class="field-value_text"> Coolng (m/s) </td>
+                    <td class="field-description_text">{{ itemspec_list.cooling_text }}</td> 
+                </tr>
+                <tr style="font-size:13px;">
+                    <td class="field-value_text"> Ambient (℃) </td>
+                    {% if itemspec_list.ambient_from_int %}
+                        <td class="field-description_text">{{ itemspec_list.ambient_intf }} ~ {{ itemspec_list.ambient_intt }}</td> 
+                    {% else %}
+                    <td class="field-description_text"> &nbsp; </td> 
+                    {% endif %}
+                </tr>
+                <tr style="font-size:13px;">
+                    <td class="field-value_text"> Weight (kg) </td>
+                    <td class="field-description_text">{{ itemspec_list.weight_deci }}</td> 
+                </tr>
+                <tr style="font-size:13px;">
+                    <td class="field-value_text"> Size (mm) </td>
+                    <td class="field-description_text">{{ itemspec_list.size_text }}</td> 
+                </tr>
+                <tr style="font-size:13px;">
+                    <td class="field-value_text"> Base Size </td>
+                    <td class="field-description_text">{{ itemspec_list.basesize_text }}</td> 
+                </tr>
+                <tr style="font-size:13px;">
+                    <td class="field-value_text"> 금형 보유 </td>
+                    <td class="field-description_text">{{ itemspec_list.mold_text }}</td> 
+                </tr>
+                <tr style="font-size:13px;">
+                    <td class="field-value_text"> Product Types </td>
+                    <td class="field-description_text">{{ itemspec_list.product_type_text }}</td> 
+                </tr>
+                <tr style="font-size:13px;">
+                    <td class="field-value_text"> Number of Pipes </td>
+                    <td class="field-description_text">{{ itemspec_list.pipe_num_int }}</td> 
+                </tr>
+                <tr style="font-size:13px;">
+                    <td class="field-value_text"> Number of Fins </td>
+                    <td class="field-description_text">{{ itemspec_list.fins_num_int }}</td> 
+                </tr>
+                <tr style="font-size:13px;">
+                    <td class="field-value_text"> Name of Clients </td>
+                    <td class="field-description_text">{{ itemspec_list.client_text }}</td> 
+                </tr>
+                <tr style="font-size:13px;">
+                    <td class="field-value_text"> Name of Project </td>
+                    <td class="field-description_text">{{ itemspec_list.project_text }}</td> 
+                </tr> 
+            </ul>
+        </tbody>
+    </table> 
+</div>
+
+
+
+
+{% endblock %}

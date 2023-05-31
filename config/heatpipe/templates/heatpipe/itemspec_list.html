@@ -1,0 +1,294 @@
+{% extends 'base.html' %}
+{% block content %} 
+
+
+{% if request.user.is_authenticated %}
+<div id="full-page-search">  
+<form id="searchForm" method="get" action="{% url 'heatpipe:index' %}">
+    ​{% csrf_token %}
+    <div class="text" style="font-size:13px">
+        <table id="head_list" ">  
+            <thead>
+                <tr>
+                    <th scope="col" class="sortable column-prodcode_text" style="width:100px"> 
+                        &nbsp; 
+                    </th>
+                    <th>
+                        <div class="text">&nbsp;Item Code&nbsp;</div>
+                    </th>  
+                    <th>
+                        <div class="text">&nbsp;&nbsp;Type&nbsp;&nbsp;</div>
+                    </th>
+                    <th>
+                        <div class="text">&nbsp;&nbsp;Heat Dissipate(kW)&nbsp;&nbsp;</div> 
+                    </th>  
+                    <th>
+                        <div class="text">&nbsp;&nbsp;DeltaT(K)&nbsp;&nbsp;</div>
+                    </th>  
+                    <th>
+                        <div class="text">&nbsp;&nbsp;Coolng(m/s)&nbsp;&nbsp;</div>
+                    </th> 
+                    <th>
+                        <div class="text">&nbsp;&nbsp;Ambient(℃)&nbsp;&nbsp;</div> 
+                    </th>  
+                    <th>
+                        <div class="text">&nbsp;&nbsp;Weight(kg)&nbsp;&nbsp;</div> 
+                    </th> 
+                    <th>
+                        <div class="text">&nbsp;&nbsp;금형&nbsp;&nbsp;</div> 
+                    </th>   
+                    <th>
+                        <div class="text">&nbsp;&nbsp;Pipe's Num&nbsp;&nbsp;</div> 
+                    </th>
+                    <th>
+                        <div class="text">&nbsp;&nbsp;Fin's Num&nbsp;&nbsp;</div> 
+                    </th>
+                    <th>
+                        <div class="text">&nbsp;Name of Clients&nbsp;</div>
+                    </th>   
+                </tr> 
+            </thead>
+            <tbody> 
+                <tr>
+                    <td> 
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="Search"> 
+                    </td>
+                    <td>
+                        <input type="search" name="search_item" value="">
+                    </td> 
+                    <td>
+                        &nbsp;&nbsp;
+                        <select id="type" name="search_type" size="1"> 
+                            <option value="ALL">ALL</option> 
+                            <option value="CCHP">CCHP</option>
+                            <option value="VCHP">VCHP</option>
+                            <option value="분기관">분기관(PFC)</option>
+                            <option value="절연형">절연형(PFC)</option>
+                        </select>   
+                        &nbsp;&nbsp;
+                    </td>  
+                    <td>
+                        &nbsp;
+                        <input type="dissipate" name="search_dissipate" value="" style="width:120px">
+                        &nbsp; 
+                    </td> 
+                    <td>
+                        &nbsp;
+                        <select id="detat" name="search_detat" size="1"> 
+                            <option value="ALL">ALL</option> 
+                            <option value="10">10 Below</option>
+                            <option value="20">10 Over 20 Below</option>
+                            <option value="30">20 Over 30 Below</option>
+                            <option value="40">30 Over 40 Below</option>
+                            <option value="50">40 Over 50 Below</option>
+                            <option value="60">50 Over 60 Below</option>
+                            <option value="70">60 Over 70 Below</option>
+                        </select>  
+                        &nbsp;
+                    </td>     
+                    <td>
+                        &nbsp;
+                        <select id="cooling" name="search_cooling" size="1"> 
+                            <option value="ALL">ALL</option> 
+                            <option value="Natural Cooling">Natural Cooling</option>
+                            <option value="0">0 Over 1 Below</option>
+                            <option value="1">1 Over 2 Below</option>
+                            <option value="2">2 Over 3 Below</option>
+                            <option value="3">3 Over 4 Below</option>
+                            <option value="4">4 Over 5 Below</option>
+                            <option value="5">5 Over 6 Below</option> 
+                            <option value="6">6 Over</option> 
+                        </select>  
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                        <input type="ambient" name="search_ambient" value="" style="width:100px">
+                        &nbsp; 
+                    </td> 
+                    <td>
+                        &nbsp;
+                        <input type="weight" name="search_weight" value="" style="width:100px">
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                        <select id="mold" name="search_mold" size="1" style="width:80px"> 
+                            <option value="ALL">ALL</option> 
+                            <option value="">X</option>
+                            <option value="O">O</option>
+                        </select>  
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                        <input type="pipenum" name="search_pipenum" value="" style="width:100px">
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                        <input type="finnum" name="search_finnum" value="" style="width:100px">
+                        &nbsp;
+                    </td>
+                    <td>
+                        <input type="client" name="search_client" value="" style="width:100px">
+                    </td>      
+                </tr> 
+            </tbody>
+        </table>
+    </div>
+</form> 
+</div> 
+<div class="results">
+    <table id="result_list" border="1" style="font-size:13px; border-width:1px; border-style:solid;" cellspacing="0" bordercolordark="white" bordercolorlight="black">
+        <thead>
+            <tr style="background-color:rgb(255,255,204); border-width:1px; border-style:solid;" cellspacing="0" bordercolordark="white" bordercolorlight="black">
+                <th scope="col" class="sortable column-prodcode_text" style="width:180px"> 
+                    <div class="text">&nbsp;Product Code&nbsp;</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col" class="sortable column-itemcode_text" style="width:200px"> 
+                    <div class="text">&nbsp;Item Code&nbsp;</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col" class="sortable column-drowcode_text" style="width:180px">
+                    <div class="text">&nbsp;Drawing Number&nbsp;</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col" class="sortable column-type_text" style="width:100px"> 
+                    <div class="text">&nbsp;Type&nbsp;</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col" class="sortable column-heat_dissipate_deci" style="width:100px"> 
+                    <div class="text">&nbsp;Heat Dissipate (kW)&nbsp;</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col" class="sortable column-delta_temp_deci" style="width:100px"> 
+                    <div class="text">&nbsp;Delta Temperature (K)&nbsp;</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col" class="sortable column-rth_deci" style="width:100px"> 
+                    <div class="text">&nbsp;&nbsp;Rth&nbsp;&nbsp;</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col" class="sortable column-cooling_text" style="width:100px"> 
+                    <div class="text">&nbsp;Coolng (m/s)&nbsp;</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col" class="sortable column-ambient_int" style="width:100px"> 
+                    <div class="text">&nbsp;Ambient (℃)&nbsp;</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col" class="sortable column-weight_deci" style="width:100px">
+                    <div class="text">&nbsp;Weight (kg)&nbsp;</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col" class="sortable column-size_text" style="width:200px"> 
+                    <div class="text">&nbsp;&nbsp;&nbsp;Size (mm)&nbsp;&nbsp;&nbsp;</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col" class="sortable column-basesize_text" style="width:200px">
+                    <div class="text">&nbsp;&nbsp;Base Size&nbsp;&nbsp;</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col" class="sortable column-mold_text" style="width:100px"> 
+                    <div class="text">&nbsp;Have Mold&nbsp;</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col" class="sortable column-product_type_text" style="width:100px"> 
+                    <div class="text">&nbsp;Product Types&nbsp;</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col" class="sortable column-pipe_num_int" style="width:100px"> 
+                    <div class="text">&nbsp;Number of Pipes&nbsp;</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col" class="sortable column-fins_num_int" style="width:100px"> 
+                    <div class="text">&nbsp;Number of Fins&nbsp;</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col" class="sortable column-client_text" style="width:250px"> 
+                    <div class="text">&nbsp;&nbsp;Name of Clients&nbsp;&nbsp;</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col" class="sortable column-project_text" style="width:400px"> 
+                    <div class="text">&nbsp;&nbsp;Name of Project&nbsp;&nbsp;</div>
+                    <div class="clear"></div>
+                </th> 
+            </tr>
+        </thead>
+
+        <tbody> 
+            {% if itemspec_list %}
+            <ul>
+            {% for itemspec_list in itemspec_list %}
+                <tr>
+                    <td class="field-prodcode_text">{{ itemspec_list.prodcode_text }}</td>
+                    <!-- th class="field-itemcode_text"><a href="/heatpipe/{{ itemspec_list.id }}/">{{ itemspec_list.itemcode_text }}</a></th -->
+                    <th class="field-itemcode_text"><a href="{% url 'heatpipe:detail' itemspec_list.id %}">{{ itemspec_list.itemcode_text }}</a></th>    
+                    <td class="field-drowcode_text">{{ itemspec_list.drowcode_text }}</td>
+                    <td class="field-type_text">{{ itemspec_list.type_text }}</td>
+                    <td class="field-heat_dissipate_deci">{{ itemspec_list.heat_dissipate_deci }}</td>
+                    <td class="field-delta_temp_deci">{{ itemspec_list.delta_temp_deci }}</td>
+                    <td class="field-rth_deci">{{ itemspec_list.rth_deci }}</td>
+                    <td class="field-cooling_text">{{ itemspec_list.cooling_text }}</td>
+                    <td class="field-ambient_int">{{ itemspec_list.ambient_intf }}~{{ itemspec_list.ambient_intt }}</td>
+                    <td class="field-weight_deci">{{ itemspec_list.weight_deci }}</td>
+                    <td class="field-size_text">{{ itemspec_list.size_text }}</td>
+                    <td class="field-basesize_text">{{ itemspec_list.basesize_text }}</td>
+                    <td class="field-mold_text">{{ itemspec_list.mold_text }}</td>
+                    <td class="field-product_type_text">{{ itemspec_list.product_type_text }}</td>
+                    <td class="field-pipe_num_int">{{ itemspec_list.pipe_num_int }}</td>
+                    <td class="field-fins_num_int">{{ itemspec_list.fins_num_int }}</td>
+                    <td class="field-client_text">{{ itemspec_list.client_text }}</td>
+                    <td class="field-project_text">{{ itemspec_list.project_text }}</td>
+                </tr>
+            {% endfor %}
+            </ul>
+            {% else %}
+                <p>데이타가 없습니다.</p>
+            {% endif %}
+        </tbody>
+    </table>
+    <!-- 페이징처리 시작 -->
+    <ul class="pagination justify-content-center">
+        <!-- 이전페이지 -->
+        {% if itemspec_list.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ itemspec_list.previous_page_number }}">이전</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+        </li>
+        {% endif %}
+        <!-- 페이지리스트 -->
+        {% for page_number in itemspec_list.paginator.page_range %}
+        {% if page_number == itemspec_list.number %}
+        <li class="page-item active" aria-current="page">
+            <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+        </li>
+        {% else %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+        <!-- 다음페이지 -->
+        {% if itemspec_list.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ itemspec_list.next_page_number }}">다음</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+        </li>
+        {% endif %}
+    </ul>
+    <!-- 페이징처리 끝 --> 
+</div> 
+{% else %}
+    <p>User login please</p>
+{% endif %}
+
+{% endblock %} 
